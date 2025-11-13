@@ -11,8 +11,8 @@ pipeline {
 
     stage('Build & Test') {
       steps {
-        // Ruta COMPLETA a Maven (fíjate en las dobles barras \\ y las comillas)
-        bat '"C:\\Maven\\apache-maven-3.8.6\\bin\\mvn.cmd" clean verify'
+        // Usa la versión que tú tienes: apache-maven-3.9.11
+        bat '"C:\\Maven\\apache-maven-3.9.11\\bin\\mvn.cmd" clean verify'
       }
     }
 
