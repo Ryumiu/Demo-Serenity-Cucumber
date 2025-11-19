@@ -5,7 +5,7 @@ pipeline {
 
     stage('Checkout') {
       steps {
-        git 'https://github.com/Laura4lilavati/Demo-Serenity-Cucumber.git'
+        git 'https://github.com/Ryumiu/Demo-Serenity-Cucumber
       }
     }
 
