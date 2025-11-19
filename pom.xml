@@ -1,60 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.ejemplo</groupId>
-    <artifactId>Demo-Serenity-Cucumber</artifactId>
+    <!-- Ajusta estos datos si quieres, pero dejé los que salen en tu log -->
+    <groupId>pom.qualitystream.Test</groupId>
+    <artifactId>SwageDemo</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>Demo Serenity Cucumber</name>
+    <name>SwageDemo Serenity Cucumber</name>
     <packaging>jar</packaging>
 
+    <!-- ===================== -->
+    <!--  PROPIEDADES GLOBALES -->
+    <!-- ===================== -->
     <properties>
         <!-- Java 17 -->
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <!-- Otras propiedades de Serenity, Cucumber -->
+        <!-- Versiones de librerías -->
         <serenity.version>4.0.46</serenity.version>
         <serenity.cucumber.version>4.0.46</serenity.cucumber.version>
+        <cucumber.version>6.11.0</cucumber.version>
         <junit.version>4.13.2</junit.version>
     </properties>
 
+    <!-- ============= -->
+    <!--  DEPENDENCIAS -->
+    <!-- ============= -->
     <dependencies>
-        <!-- dependencias Serenity, Cucumber -->
-        <!-- Ejemplo: -->
+
+        <!-- JUnit para los tests -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Core de Serenity -->
+        <dependency>
+            <groupId>net.serenity-bdd</groupId>
+            <artifactId>serenity-core</artifactId>
+            <version>${serenity.version}</version>
+        </dependency>
+
+        <!-- Integración Serenity + JUnit -->
+        <dependency>
+            <groupId>net.serenity-bdd</groupId>
+            <artifactId>serenity-junit</artifactId>
+            <version>${serenity.version}</version>
+        </dependency>
+
+        <!-- Integración Serenity + Cucumber -->
+        <dependency>
+            <groupId>net.serenity-bdd</groupId>
+            <artifactId>serenity-cucumber6</artifactId>
+            <version>${serenity.cucumber.version}</version>
+        </dependency>
+
+        <!-- Cucumber (Java) -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Cucumber + JUnit runner -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- (Opcional) Selenium si usas pruebas Web -->
+        <!--
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>4.26.0</version>
+        </dependency>
+        -->
+
     </dependencies>
 
+    <!-- ========== -->
+    <!--   BUILD    -->
+    <!-- ========== -->
     <build>
         <plugins>
-            <!-- Compilar con Java 17 -->
+
+            <!-- Compilar TODO con Java 17 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
+                <version>3.14.0</version>
                 <configuration>
-                    <release>17</release>
+                    <!-- Código principal -->
+                    <source>17</source>
+                    <target>17</target>
+                    <!-- Código de test -->
+                    <testSource>17</testSource>
+                    <testTarget>17</testTarget>
                 </configuration>
+            </plugin>
 
+            <!-- Ejecutar los tests (JUnit/Serenity/Cucumber) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M9</version>
+                <configuration>
+                    <!-- Ajusta el nombre del runner si en tu proyecto se llama distinto -->
+                    <includes>
+                        <include>**/CucumberTestSuite*.java</include>
+                    </includes>
+                    <testFailureIgnore>false</testFailureIgnore>
+                </configuration>
+            </plugin>
 
-            <!-- Serenity reportes -->
+            <!-- Serenity: genera el reporte en target/site/serenity -->
             <plugin>
                 <groupId>net.serenity-bdd.maven.plugins</groupId>
                 <artifactId>serenity-maven-plugin</artifactId>
-                <version>4.2.22</version>
+                <version>${serenity.version}</version>
+                <configuration>
+                    <!-- Puedes definir tags si los usas -->
+                    <!-- <tags>${tags}</tags> -->
+                </configuration>
                 <executions>
                     <execution>
                         <id>serenity-reports</id>
-                        <phase>post-integration-test</phase>
+                        <phase>verify</phase>
                         <goals>
                             <goal>aggregate</goal>
                         </goals>
@@ -64,4 +147,5 @@
 
         </plugins>
     </build>
+
 </project>
